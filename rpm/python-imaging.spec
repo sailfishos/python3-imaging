@@ -87,7 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f files.main
 %defattr (-,root,root,-)
-%{python_sitearch}/PIL
+%dir %{python_sitearch}/PIL
+/usr/lib/python2.7/site-packages/Pillow-2.1.0-py2.7.egg-info
 
 %files devel
 %defattr (0644,root,root,755)
