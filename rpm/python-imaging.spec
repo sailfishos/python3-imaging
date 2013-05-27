@@ -88,8 +88,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -f files.main
 %defattr (-,root,root,-)
 %{python_sitearch}/PIL
-%{python_sitearch}/Pillow
-%{_libdir}/python2.7/site-packages/Pillow*
 
 %files devel
 %defattr (0644,root,root,755)
