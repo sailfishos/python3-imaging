@@ -4,8 +4,8 @@
 
 Summary:       Python's own image processing library
 Name:          python-imaging
-Version:       2.2.0
-Release:       14
+Version:       2.9.0
+Release:       1
 
 License:       BSD
 Group:         System/Libraries
@@ -79,7 +79,7 @@ popd
 
 
 %check
-PYTHONPATH=$(ls -1d build/lib.linux*) %{__python} selftest.py
+PYTHONPATH=$(ls -1d build/lib.linux*) %{__python} selftest.py --installed
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f files.main
 %defattr (-,root,root,-)
 %dir %{python_sitearch}/PIL
-/usr/lib/python2.7/site-packages/Pillow-2.1.0-py2.7.egg-info
+/usr/lib/python2.7/site-packages/*.egg-info
 
 %files devel
 %defattr (0644,root,root,755)
