@@ -13,7 +13,7 @@ Group:         System/Libraries
 Source0:       %{name}-%{version}.tar.gz
 URL:           http://www.pythonware.com/products/pil/
 
-BuildRequires: python-devel, libjpeg-devel, zlib-devel, freetype-devel, python-setuptools, lcms-devel, libtiff-devel
+BuildRequires: python-devel, libjpeg-devel, zlib-devel, freetype-devel, python-setuptools, libtiff-devel
 
 %description
 Python Imaging Library
