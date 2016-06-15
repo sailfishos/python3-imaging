@@ -4,7 +4,7 @@
 
 Summary:       Python's own image processing library
 Name:          python-imaging
-Version:       2.9.0
+Version:       2.9.0.1
 Release:       1
 
 License:       BSD
