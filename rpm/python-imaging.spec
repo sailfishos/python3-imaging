@@ -88,7 +88,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f files.main
 %defattr (-,root,root,-)
 %dir %{python_sitearch}/PIL
-/usr/lib/python2.7/site-packages/*.egg-info
+%{python_sitearch}/*.egg-info
 
 %files devel
 %defattr (0644,root,root,755)
