@@ -1,19 +1,19 @@
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%define pyver %(%{__python} -c "import sys ; print sys.version[:3]")
-%define py_incdir %{_includedir}/python%{pyver}
+%define py_incdir %{_includedir}/python%{python3_version}
 
 Summary:       Python's own image processing library
-Name:          python-imaging
-Version:       2.9.0.1
+Name:          python3-imaging
+Version:       8.0.1
 Release:       1
-
 License:       BSD
-Group:         System/Libraries
-
 Source0:       %{name}-%{version}.tar.gz
-URL:           http://www.pythonware.com/products/pil/
+URL:           https://python-pillow.org/
 
-BuildRequires: python-devel, libjpeg-devel, zlib-devel, freetype-devel, python-setuptools, libtiff-devel
+BuildRequires: freetype-devel
+BuildRequires: libjpeg-devel
+BuildRequires: libtiff-devel
+BuildRequires: python3-devel
+BuildRequires: python3-setuptools
+BuildRequires: zlib-devel
 
 %description
 Python Imaging Library
@@ -30,7 +30,6 @@ tk interface) and sane (scanning devices interface).
 
 %package devel
 Summary: Development files for python-imaging
-Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}, python-devel
 Requires: libjpeg-devel
 Requires: zlib-devel
@@ -40,55 +39,43 @@ Development files for python-imaging.
 
 
 %prep
-%setup -q -n %{name}-%{version}/Pillow
+%autosetup -n %{name}-%{version}/Pillow
 
 %build
-# Is this still relevant? (It was used in 1.1.4)
-#%ifarch x86_64
-#   CFLAGS="$RPM_OPT_FLAGS -fPIC -DPIC" \
-#%endif
-
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-
+%py3_build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%{py_incdir}/Imaging
-install -m 644 libImaging/*.h $RPM_BUILD_ROOT/%{py_incdir}/Imaging
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+mkdir -p %{buildroot}%{py_incdir}/Imaging
+install -m 644 src/libImaging/*.h %{buildroot}%{py_incdir}/Imaging
+%py3_install
 
 
 # There is no need to ship the binaries since they are already packaged
 # in %doc
-rm -rf $RPM_BUILD_ROOT%{_bindir}
+rm -rf %{buildroot}%{_bindir}
 
 # Separate files that need Tk and files that don't
 echo '%%defattr (0644,root,root,755)' > files.main
 p="$PWD"
 
-pushd $RPM_BUILD_ROOT%{python_sitearch}/PIL
+pushd %{buildroot}%{python3_sitearch}/PIL
 for file in *; do
     case "$file" in
     *)
         what=files.main
         ;;
     esac
-    echo %{python_sitearch}/PIL/$file >> "$p/$what"
+    echo %{python3_sitearch}/PIL/$file >> "$p/$what"
 done
 popd
 
-
 %check
-PYTHONPATH=$(ls -1d build/lib.linux*) %{__python} selftest.py --installed
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
+PYTHONPATH=$(ls -1d build/lib.linux*) %{__python3} selftest.py --installed
 
 %files -f files.main
 %defattr (-,root,root,-)
-%dir %{python_sitearch}/PIL
-%{python_sitearch}/*.egg-info
+%dir %{python3_sitearch}/PIL
+%{python3_sitearch}/*.egg-info
 
 %files devel
 %defattr (0644,root,root,755)
