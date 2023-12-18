@@ -30,7 +30,7 @@ tk interface) and sane (scanning devices interface).
 
 %package devel
 Summary: Development files for python-imaging
-Requires: %{name} = %{version}-%{release}, python-devel
+Requires: %{name} = %{version}-%{release}, python3-devel
 Requires: libjpeg-devel
 Requires: zlib-devel
 
