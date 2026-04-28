@@ -2,18 +2,21 @@
 
 Summary:       Python's own image processing library
 Name:          python3-imaging
-Version:       9.0.0
+Version:       12.2.0
 Release:       1
 License:       BSD
+URL:           https://github.com/sailfishos/python3-imaging
 Source0:       %{name}-%{version}.tar.gz
-URL:           https://python-pillow.org/
+Patch1:        0001-Revert-Add-parallel-compile-from-pybind11.patch
+Patch2:        0002-Revert-Replace-deprecated-classifier-with-licence-ex.patch
 
-BuildRequires: freetype-devel
-BuildRequires: libjpeg-devel
-BuildRequires: libtiff-devel
-BuildRequires: python3-devel
+BuildRequires: pkgconfig(freetype2)
+BuildRequires: pkgconfig(libjpeg)
+BuildRequires: pkgconfig(libtiff-4)
+BuildRequires: pkgconfig(libwebp)
+BuildRequires: pkgconfig(python3)
+BuildRequires: pkgconfig(zlib)
 BuildRequires: python3-setuptools
-BuildRequires: zlib-devel
 
 %description
 Python Imaging Library
@@ -31,15 +34,14 @@ tk interface) and sane (scanning devices interface).
 %package devel
 Summary: Development files for python-imaging
 Requires: %{name} = %{version}-%{release}, python3-devel
-Requires: libjpeg-devel
-Requires: zlib-devel
+Requires: pkgconfig(libjpeg)
+Requires: pkgconfig(zlib)
 
 %description devel
 Development files for python-imaging.
 
-
 %prep
-%autosetup -n %{name}-%{version}/Pillow
+%autosetup -p1 -n %{name}-%{version}/Pillow
 
 %build
 %py3_build
@@ -49,34 +51,18 @@ mkdir -p %{buildroot}%{py_incdir}/Imaging
 install -m 644 src/libImaging/*.h %{buildroot}%{py_incdir}/Imaging
 %py3_install
 
-
 # There is no need to ship the binaries since they are already packaged
 # in %doc
 rm -rf %{buildroot}%{_bindir}
 
-# Separate files that need Tk and files that don't
-echo '%%defattr (0644,root,root,755)' > files.main
-p="$PWD"
-
-pushd %{buildroot}%{python3_sitearch}/PIL
-for file in *; do
-    case "$file" in
-    *)
-        what=files.main
-        ;;
-    esac
-    echo %{python3_sitearch}/PIL/$file >> "$p/$what"
-done
-popd
-
 %check
 PYTHONPATH=$(ls -1d build/lib.linux*) %{__python3} selftest.py --installed
 
-%files -f files.main
-%defattr (-,root,root,-)
+%files
+%license docs/COPYING
 %dir %{python3_sitearch}/PIL
+%{python3_sitearch}/PIL/*
 %{python3_sitearch}/*.egg-info
 
 %files devel
-%defattr (0644,root,root,755)
 %{py_incdir}/Imaging
