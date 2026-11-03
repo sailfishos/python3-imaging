@@ -6,11 +6,11 @@ Subject: [PATCH] Revert "Add parallel compile from pybind11"
 This reverts commit 2059e060051acd2024360834da435a266d9dc665.
 ---
  pyproject.toml | 1 -
- setup.py       | 5 -----
- 2 files changed, 6 deletions(-)
+ setup.py       | 7 -------
+ 2 files changed, 8 deletions(-)
 
 diff --git a/pyproject.toml b/pyproject.toml
-index 65e3b76591e4b189b74c8f69162be5c67004c7bc..6bc81636ad3c912d167fd44cb7b930d83dbc84c9 100644
+index d978f394324f634099f3eaf68947d250308b45a2..65fb844ac78a7e143c7eabe81e8afd929b1cb408 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
 @@ -1,7 +1,6 @@
@@ -22,25 +22,34 @@ index 65e3b76591e4b189b74c8f69162be5c67004c7bc..6bc81636ad3c912d167fd44cb7b930d8
  ]
  backend-path = [
 diff --git a/setup.py b/setup.py
-index 496c8cb1f0ec121e059cc1934a546ec8c6f67318..0b6203453400b9ca9c4e13b1e7cc99a7da7a8205 100644
+index 2d02cf129ca8788694a5531eb6ca74ea879f0d60..a6d25d8af9f1be5331d6baf74263e03e4726fb7f 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,7 +17,6 @@ import sys
+ import sysconfig
  import warnings
- from collections.abc import Iterator
  
 -from pybind11.setup_helpers import ParallelCompile
  from setuptools import Extension, setup
  from setuptools.command.build_ext import build_ext
  
-@@ -32,10 +31,6 @@ while sys.argv[-1].startswith("--pillow-configuration="):
+@@ -34,10 +33,6 @@ while sys.argv[-1].startswith("--pillow-configuration="):
      _, key, value = sys.argv.pop().split("=", 2)
      configuration.setdefault(key, []).append(value)
  
--default = int(configuration.get("parallel", ["0"])[-1])
--ParallelCompile("MAX_CONCURRENCY", default).install()
+-parallel_default = int(configuration.get("parallel", ["0"])[-1])
+-ParallelCompile("MAX_CONCURRENCY", parallel_default).install()
 -
 -
  def get_version() -> str:
      version_file = "src/PIL/_version.py"
      with open(version_file, encoding="utf-8") as f:
+@@ -382,8 +377,6 @@ class pil_build_ext(build_ext):
+             setattr(self, f"vendor_{x}", self.check_configuration(x, "vendor"))
+         if self.check_configuration("debug", "true"):
+             self.debug = True
+-        if parallel_default:
+-            self.parallel = parallel_default
+ 
+     def finalize_options(self) -> None:
+         build_ext.finalize_options(self)
