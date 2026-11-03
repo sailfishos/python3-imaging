@@ -2,7 +2,7 @@
 
 Summary:       Python's own image processing library
 Name:          python3-imaging
-Version:       12.2.0
+Version:       13.0.0
 Release:       1
 License:       BSD
 URL:           https://github.com/sailfishos/python3-imaging
