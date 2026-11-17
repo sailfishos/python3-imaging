@@ -10,7 +10,7 @@ This reverts commit e995eef424cb996ebf933b690d30c1834b99999d.
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/pyproject.toml b/pyproject.toml
-index 6bc81636ad3c912d167fd44cb7b930d83dbc84c9..cf29606be7ea47eb45f2528763fe2c6716015c38 100644
+index 65fb844ac78a7e143c7eabe81e8afd929b1cb408..625826d63c8e7cec3470b452deebdb48b7839ec7 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
 @@ -1,7 +1,7 @@
@@ -32,10 +32,10 @@ index 6bc81636ad3c912d167fd44cb7b930d83dbc84c9..cf29606be7ea47eb45f2528763fe2c67
  authors = [
    { name = "Jeffrey 'Alex' Clark", email = "aclark@aclark.net" },
  ]
- requires-python = ">=3.10"
+ requires-python = ">=3.11"
  classifiers = [
    "Development Status :: 6 - Mature",
 +  "License :: OSI Approved :: CMU License (MIT-CMU)",
    "Programming Language :: Python :: 3 :: Only",
-   "Programming Language :: Python :: 3.10",
    "Programming Language :: Python :: 3.11",
+   "Programming Language :: Python :: 3.12",
